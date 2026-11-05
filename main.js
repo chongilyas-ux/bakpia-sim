@@ -351,7 +351,7 @@ function animasi() {
     player.position.add(v);
     const batas = 38;
     player.position.x = THREE.MathUtils.clamp(player.position.x, -batas, batas);
-    player.position.z = THREE.MathUtils.clamp(player.position.z, -(batas + 16), batas + 16);
+    player.position.z = THREE.MathUtils.clamp(player.position.z, -11.4, batas + 16); // utara dibatasi depan toko (tidak boleh masuk gedung)
     // hadap arah jalan
     heading = Math.atan2(v.x, v.z);
   }
@@ -360,14 +360,10 @@ function animasi() {
   badanP.position.y = 0.95 + (v ? Math.abs(Math.sin(t * 12)) * 0.06 : 0);
   kepalaP.position.y = 1.74 + (v ? Math.abs(Math.sin(t * 12)) * 0.06 : 0);
 
-  // kamera mengikuti dari belakang
-  const camTarget = new THREE.Vector3(
-    player.position.x - Math.sin(heading) * 8.5,
-    6.5,
-    player.position.z - Math.cos(heading) * 8.5
-  );
-  // kamera jangan menembus rumah: kalau titiknya jatuh di rumah, lihat dari samping timur
-  if (camTarget.z > 12 && Math.abs(camTarget.x) < 4.8) camTarget.set(player.position.x + 8, 6.2, player.position.z);
+  // kamera tetap: selalu dari selatan melihat utara (searah tombol W)
+  let camTarget = new THREE.Vector3(player.position.x, 7.4, player.position.z + 9.5);
+  // di area toko (utara jalan), lihat dari samping timur supaya tenda toko tidak menutupi player
+  if (player.position.z < -7) camTarget.set(player.position.x + 10, 7, player.position.z + 3.2);
   camera.position.lerp(camTarget, 1 - Math.pow(0.001, dt));
   camera.lookAt(player.position.x, 1.2, player.position.z);
 
