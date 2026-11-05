@@ -1,0 +1,152 @@
+:root {
+  --bg: #F7F1E3;
+  --foreground: #2B2A20;
+  --muted-foreground: #6C6A54;
+  --heritage: #2F3B1E;
+  --primary: #3F5427;
+  --on-primary: #F9F4E3;
+  --gold: #C99C33;
+  --gold-dark: #9A7420;
+  --card: #FFFDF6;
+  --border: #E3DAC2;
+  --danger: #B3402C;
+  --accent: #F1E6C8;
+  --shadow: 0 10px 34px rgb(43 42 32 / .14);
+}
+* { -webkit-tap-highlight-color: transparent; box-sizing: border-box }
+html, body { margin: 0; height: 100% }
+body {
+  background: var(--bg); color: var(--foreground);
+  font-family: "DM Sans", sans-serif; font-size: 15px; line-height: 1.65;
+  overflow: hidden;
+}
+canvas#scene { position: fixed; inset: 0; width: 100%; height: 100%; display: block }
+#loader {
+  position: fixed; inset: 0; display: grid; place-items: center;
+  background: var(--heritage); color: var(--on-primary);
+  font-family: "Playfair Display", serif; font-size: 18px; z-index: 60;
+}
+#loader[hidden] { display: none }
+
+/* ---- intro ---- */
+#intro, #panel-hasil {
+  position: fixed; inset: 0; z-index: 50; display: grid; place-items: center;
+  background: linear-gradient(160deg, var(--heritage), #22301A 65%);
+  color: var(--on-primary); padding: 24px;
+}
+#intro[hidden], #panel-hasil.hidden { display: none }
+#intro[hidden] { display: none }
+.intro-card, .hasil-card {
+  max-width: 560px; width: 100%; text-align: center; display: grid; gap: 16px;
+  justify-items: center; justify-self: center;
+}
+.kicker { font-size: 11px; letter-spacing: 3px; text-transform: uppercase; color: var(--gold); margin: 0 }
+.intro-card h1, .hasil-card h2 { font-family: "Playfair Display", serif; margin: 0 }
+.intro-card h1 { font-size: clamp(38px, 9vw, 58px); line-height: 1.1 }
+.intro-card h1 em { font-style: normal; color: var(--gold) }
+.intro-lead { max-width: 480px; opacity: .85; margin: 0 }
+.intro-hint { font-size: 12px; opacity: .6; margin: 0 }
+.intro-hint kbd { border: 1px solid var(--border); padding: 2px 6px; border-radius: 4px; font: inherit }
+.intro-modes {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 12px; width: 100%;
+  max-width: 480px;
+}
+.intro-modes > div {
+  background: rgb(255 255 255 / .07); border: 1px solid rgb(255 255 255 / .13);
+  border-radius: 10px; padding: 14px; font-size: 12.5px; display: grid; gap: 4px;
+}
+.intro-modes strong { color: var(--gold); font-size: 13px }
+.intro-modes span { opacity: .72; line-height: 1.55 }
+
+/* ---- tombol ---- */
+.btn-primary, .btn-ghost {
+  font: inherit; font-weight: 600; cursor: pointer; border-radius: 8px;
+  padding: 13px 26px; transition: transform .16s ease, box-shadow .16s ease;
+  text-decoration: none; display: inline-block;
+}
+.btn-primary { background: var(--gold); color: #241C04; box-shadow: 0 4px 0 var(--gold-dark); border: 0 }
+.btn-primary:hover { transform: translateY(-2px); box-shadow: 0 6px 0 var(--gold-dark) }
+.btn-primary:active { transform: translateY(2px); box-shadow: 0 1px 0 var(--gold-dark) }
+.btn-ghost { background: transparent; color: var(--on-primary); border: 1px solid rgb(255 255 255 / .25) }
+.btn-ghost:hover { border-color: var(--gold); color: var(--gold) }
+.btn-primary:focus-visible, .btn-ghost:focus-visible, #dpad button:focus-visible {
+  outline: 2px solid var(--on-primary); outline-offset: 3px;
+}
+
+/* ---- HUD ---- */
+#hud {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 40;
+  display: flex; align-items: center; justify-content: space-between;
+  gap: 12px; padding: 12px 16px; pointer-events: none;
+}
+#hud[hidden] { display: none }
+.hud-misi {
+  display: flex; align-items: center; gap: 12px;
+  background: var(--card); border: 1px solid var(--border); border-radius: 999px;
+  padding: 9px 18px; font-size: 13px; box-shadow: var(--shadow);
+}
+#hud-judul { font-weight: 600 }
+#hud-langkah { color: var(--gold-dark); font-weight: 700 }
+#hud-waktu {
+  background: var(--heritage); color: var(--on-primary);
+  font-variant-numeric: tabular-nums; font-weight: 600; font-size: 14px;
+  border-radius: 999px; padding: 9px 18px; box-shadow: var(--shadow);
+}
+
+/* ---- dialog ---- */
+#dialog {
+  position: fixed; left: 50%; bottom: 26px; transform: translate(-50%, 12px);
+  z-index: 45; width: min(560px, calc(100% - 32px));
+  background: var(--card); border: 1px solid var(--border); border-left: 4px solid var(--gold);
+  border-radius: 12px; padding: 16px 18px; box-shadow: var(--shadow);
+  opacity: 0; pointer-events: none; transition: opacity .2s ease, transform .2s ease;
+}
+#dialog.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto }
+#dialog.hide, .hidden { display: none }
+#dialog p { margin: 0 0 10px; font-size: 14px }
+#dialog strong { color: var(--primary) }
+#dialog-aksi { display: flex; gap: 10px; flex-wrap: wrap }
+#dialog .btn-mini {
+  font: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+  border: 0; border-radius: 7px; padding: 10px 16px; text-decoration: none; display: inline-block;
+}
+.btn-mini.utama { background: var(--primary); color: var(--on-primary) }
+.btn-mini.utama:hover { filter: brightness(1.12) }
+.btn-mini.netral { background: var(--accent); color: var(--foreground) }
+.btn-mini utama:focus-visible, .btn-mini.netral:focus-visible { outline: 2px solid var(--primary); outline-offset: 2px }
+
+/* ---- hasil ---- */
+.hasil-card h2 { font-size: clamp(30px, 7vw, 46px); color: var(--gold); margin: 0 }
+.hasil-tabel { width: 100%; max-width: 480px; border-collapse: collapse; font-size: 13.5px }
+.hasil-tabel th, .hasil-tabel td { padding: 11px 12px; text-align: left; border-bottom: 1px solid rgb(255 255 255 / .16) }
+.hasil-tabel th { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gold); font-weight: 600 }
+.hasil-tabel #h-online, .hasil-tabel #h-jalan { font-variant-numeric: tabular-nums; font-weight: 700; white-space: nowrap }
+.hasil-lucu { font-size: 13px; opacity: .8; max-width: 440px; margin: 0 }
+
+/* ---- kontrol sentuh ---- */
+#dpad {
+  position: fixed; bottom: 96px; left: 0; right: 0; z-index: 42;
+  display: none; grid-template-columns: repeat(3, 64px); gap: 8px;
+  justify-items: center; padding-bottom: env(safe-area-inset-bottom);
+  pointer-events: none;
+}
+#dpad[hidden] { display: none }
+@media (hover: none) and (pointer: coarse) { #dpad:not([hidden]) { display: grid } }
+#dpad button {
+  pointer-events: auto; width: 64px; height: 64px; border-radius: 50%;
+  border: 1px solid var(--border); background: rgb(255 253 246 / .92);
+  font-size: 18px; color: var(--primary); cursor: pointer; box-shadow: var(--shadow);
+  touch-action: none; user-select: none;
+}
+#dpad button[data-arah="kiri"] { grid-column: 1; grid-row: 2 }
+#dpad button[data-arah="depan"] { grid-column: 2; grid-row: 1 }
+#dpad button[data-arah="belakang"] { grid-column: 2; grid-row: 2 }
+#dpad button[data-arah="kanan"] { grid-column: 3; grid-row: 2 }
+#dpad button:active { background: var(--accent) }
+
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; animation: none !important } }
+@media (max-width: 480px) {
+  .intro-modes { grid-template-columns: 1fr }
+  .hud-misi { font-size: 12px; padding: 8px 14px }
+  #dpad { bottom: 118px }
+}

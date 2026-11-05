@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Bakpia Quest — Simulasi Pesan Online Bakpia Pathok 95</title>
+<meta name="description" content="Game 3D simulasi beli bakpia: rasakan pesan online jauh lebih hemat waktu ketimbang jalan ke toko." />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:opsz,wght@9..40,400..700&family=Playfair+Display:wght@500;600;700&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/styles.css" />
+<script type="importmap">
+  { "imports": { "three": "https://unpkg.com/three@0.180.0/build/three.module.js" } }
+</script>
+</head>
+<body>
+  <div id="loader" aria-live="polite">Menyiapkan dapur…</div>
+
+  <!-- layar pembuka -->
+  <section id="intro" hidden>
+    <div class="intro-card">
+      <p class="kicker">BAKPIA PATHOK 95 · SECANG</p>
+      <h1>Bakpia Quest<em>.</em></h1>
+      <p class="intro-lead">Dua cara dapat bakpia ikatan terhangat Secang: jalan ke tokonya —
+    sepuh, antre, pulang melelahkan — atau pesan lewat
+    <strong>website Bakpia Pathok 95</strong>. Rasakan sendiri bedanya lewat dua misi.</p>
+  <div class="intro-modes">
+    <div><strong>Misi 1 · Jalan kaki</strong><span>Berjalan menempuh jalan yang jauh ke toko, antre memanjang, dan memulangkan bakpia.</span></div>
+    <div><strong>Misi 2 · Pesan online</strong><span>Membuka website, menekan pesan, dan menunggu kiriman di rumah.</span></div>
+  </div>
+      <button id="btn-mulai" class="btn-primary">Mulai Misi Jalan Kaki</button>
+      <p class="intro-hint">Gerak: <kbd>W A S D</kbd> → dekati objek bercahaya, instruksi siap muncul.</p>
+    </div>
+  </section>
+
+  <!-- HUD -->
+  <div id="hud" hidden>
+    <div class="hud-misi">
+      <span id="hud-judul">Misi 1 · Jalan ke toko</span>
+      <span id="hud-langkah">1/3</span>
+    </div>
+    <span id="hud-waktu">00.0</span>
+  </div>
+  <div id="dialog" class="hidden" role="status">
+    <p id="dialog-teks"></p>
+    <div id="dialog-aksi"></div>
+  </div>
+
+  <!-- pembanding akhir -->
+  <section id="panel-hasil" class="hidden" aria-label="Hasil">
+    <div class="hasil-card">
+      <p class="kicker">SELESAI · RINGKASAN PERFANDINGA</p>
+      <h2>Online Lebih Efisien.</h2>
+      <table class="hasil-tabel">
+        <thead><tr><th scope="col">Cara</th><th scope="col">Waktu</th><th scope="col">Catatan</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Jalan kaki</strong></td><td id="h-jalan">—</td><td>Berjalan, antre, berjalan pulang</td></tr>
+          <tr><td><strong>Pesan online</strong></td><td id="h-online">—</td><td>Pesan sekali, menunggu di rumah</td></tr>
+        </tbody>
+      </table>
+      <p id="hasil-lucu" class="hasil-lucu"></p>
+      <a id="btn-website" class="btn-primary" href="https://bakpia-pathok-95.vercel.app" target="_blank" rel="noreferrer">Coba pesan nyata di Bakpia Pathok 95</a>
+      <button id="btn-ulang" class="btn-ghost">Main lagi</button>
+    </div>
+  </section>
+
+  <!-- on-screen control for phone -->
+  <div id="dpad" class="show" hidden aria-label="Kontrol gerakan">
+    <button data-arah="depan" aria-label="Ke depan">▲</button>
+    <button data-arah="kiri" aria-label="Ke kiri">◀</button>
+    <button data-arah="kanan" aria-label="Kanan">▶</button>
+    <button data-arah="belakang" aria-label="Ke belakang">▼</button>
+  </div>
+
+  <canvas id="scene"></canvas>
+  <script type="module" src="/main.js"></script>
+</body>
+</html>
